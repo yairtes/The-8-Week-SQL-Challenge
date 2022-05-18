@@ -232,7 +232,9 @@ WITH CTE_before AS
 | B           | 820 |
 
 
-
+***
+#### For any Questions or comments, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/)
+#### To the next chalenge solution, Pizza runner click [here](https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner)
 
 
 
