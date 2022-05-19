@@ -192,7 +192,11 @@ topping_id | topping_name
 12 | Tomato Sauce
 
 ***
+### Links :link:
 
-#### For the asnwers for part A - **Pizza metrics** click [here](https://github.com/yairtes/8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/A.%20Pizza%20Metrics.md)
+For any Questions or comments, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
+For the asnwers for part A - **Pizza metrics** click [here](https://github.com/yairtes/8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/A.%20Pizza%20Metrics.md).<br/>
+To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
+
 
 
