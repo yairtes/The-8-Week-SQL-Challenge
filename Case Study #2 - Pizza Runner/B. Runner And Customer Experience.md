@@ -59,13 +59,13 @@ WITH CTE_Pizza_amount AS
 ````
 #### Answer:
 
-# Of Pizzas | AvgTime
+#Of Pizzas | AvgTime
 -- | --
 1 | 12
 2 | 18
 3 | 30
 
-#### For 1 pizza Avg of 12 Minutes making per pizza <br/>
-#### For 2 pizza Avg of 9 Minutes making per pizza <br/>
-#### For 3 pizza Avg of 10 Minutes making per pizza <br/>
-#### So the ulimate efficiency rate is for 2 pizza's <br/>
+##### For 1 pizza Avg of 12 Minutes making per pizza <br/>
+##### For 2 pizza Avg of 9 Minutes making per pizza <br/>
+##### For 3 pizza Avg of 10 Minutes making per pizza <br/>
+##### So the ulimate efficiency rate is for 2 pizza's <br/>
