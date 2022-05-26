@@ -208,6 +208,6 @@ Wednesday	|5
 ### Links :link:
 
 For any Questions or comments, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
-To the next chalenge solution, Pizza runner click [here](https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner).<br/>
+To the next solution, Runner and customer experience click [here](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/B.%20Runner%20And%20Customer%20Experience.md).<br/>
 To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
 
