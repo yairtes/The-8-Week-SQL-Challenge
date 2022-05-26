@@ -69,3 +69,75 @@ WITH CTE_Pizza_amount AS
 ##### For 2 pizza Avg of 9 Minutes making per pizza <br/>
 ##### For 3 pizza Avg of 10 Minutes making per pizza <br/>
 ##### So the ulimate efficiency rate is for 2 pizza's <br/>
+
+### 5. What was the difference between the longest and shortest delivery times for all orders?
+
+
+````sql
+WITH CTE_distance AS
+	(
+	SELECT MAX(duration) AS LongestDuration, MIN(duration) AS ShortestDuration
+	FROM  #temp_runner_orders ro
+	WHERE duration IS NOT NULL
+	)
+	SELECT LongestDuration - ShortestDuration AS DifferenceBetweenDurations
+	FROM CTE_distance
+````
+#### Answer:
+
+| DifferenceBetweenDurations |
+| -- |
+| 30 |
+
+***
+
+### 6. What was the average speed for each runner for each delivery and do you notice any trend for these values?
+
+````sql
+SELECT runner_id, co.order_id,
+	   COUNT(pizza_id) AS Pizza_count,
+	   CAST(ROUND(ro.distance/ro.duration * 60, 1) AS VARCHAR) + ' k/m' AS speed
+FROM #temp_customer_orders co JOIN #temp_runner_orders ro
+	 ON co.order_id = ro.order_id
+WHERE duration IS NOT NULL
+GROUP BY runner_id, co.order_id, ro.distance,ro.duration
+````
+
+
+#### Answer:
+runner_id | order_id | pizza_count | speed
+-- | -- | -- | --
+1 | 1 | 1   | 37.5
+2 | 1 | 1 | 44.44
+3 | 1 | 2  | 40.2
+4 | 2 | 3  | 35.1
+5 | 3 | 1  | 40
+7 | 2 | 1  | 60
+8 | 2 | 1  | 93.6
+10 | 1 | 2 | 60
+
+
+***
+
+### 7. What is the successful delivery percentage for each runner?
+
+````sql
+SELECT runner_id,
+	CAST(CAST(SUM(CASE WHEN distance IS NOT NULL THEN 1 ELSE 0 END) AS FLOAT)
+	/ COUNT(*) * 100 AS VARCHAR)+'%' AS SuccessfulPrecentage
+FROM #temp_runner_orders
+GROUP BY runner_id
+
+````
+
+
+#### Answer:
+runner_id | SuccessfulPrecentage
+-- | --
+1 | 100
+2 | 75
+3 | 50
+
+
+***
+
