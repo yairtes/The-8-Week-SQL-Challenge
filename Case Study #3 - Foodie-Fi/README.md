@@ -31,7 +31,7 @@ The Foodie-Fi team wants you to create a new payments table for the year 2020 th
 - upgrades from basic to monthly or pro plans are reduced by the current paid amount in that month and start immediately<br/>
 - upgrades from pro monthly to pro annual are paid at the end of the current billing period and also starts at the end of the month period
   once a customer churns they will no longer make payments
-  
+
 ### D. Outside The Box Questions
   
 The following are open ended questions which might be asked during a technical interview for this case study - there are no right or wrong answers, but answers that make sense from both a technical and a business perspective make an amazing impression!
@@ -41,4 +41,11 @@ The following are open ended questions which might be asked during a technical i
 3. What are some key customer journeys or experiences that you would analyse further to improve customer retention?<br/>
 4. If the Foodie-Fi team were to create an exit survey shown to customers who wish to cancel their subscription, what questions would you include in the survey?<br/>
 5. What business levers could the Foodie-Fi team use to reduce the customer churn rate? How would you validate the effectiveness of your ideas?
+
+  
+  ***
+
+## Solution
+
+For the solution click [here](https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%233%20-%20Foodie-Fi/B.%20Data%20Analysis%20Questions))
 
