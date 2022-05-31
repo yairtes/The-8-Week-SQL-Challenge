@@ -139,56 +139,30 @@ csutomer_id|order_id|ratin_id|review|rating_date|order_time|pickup_time|delivery
 ### 5. If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over after these deliveries?
 
 ````sql
-SELECT runner_id, co.order_id,
-	   COUNT(pizza_id) AS Pizza_count,
-	   CAST(ROUND(ro.distance/ro.duration * 60, 1) AS VARCHAR) + ' k/m' AS speed
+SELECT 
+	SUM(
+		CASE WHEN pizza_id = 1 THEN 12 
+		WHEN pizza_id = 2 THEN 10
+		END)
+		-
+		(SELECT SUM(distance * 0.30) FROM #temp_runner_orders) AS with_this_amount_of_money_I_should_open_a_hotdog_store
 FROM #temp_customer_orders co JOIN #temp_runner_orders ro
 	 ON co.order_id = ro.order_id
-WHERE duration IS NOT NULL
-GROUP BY runner_id, co.order_id, ro.distance,ro.duration
+WHERE distance  IS NOT NULL
 ````
 
 
 #### Answer:
-runner_id | order_id | pizza_count | speed
--- | -- | -- | --
-1 | 1 | 1   | 37.5
-2 | 1 | 1 | 44.44
-3 | 1 | 2  | 40.2
-4 | 2 | 3  | 35.1
-5 | 3 | 1  | 40
-7 | 2 | 1  | 60
-8 | 2 | 1  | 93.6
-10 | 1 | 2 | 60
 
-
-***
-
-### 7. What is the successful delivery percentage for each runner?
-
-````sql
-SELECT runner_id,
-	CAST(CAST(SUM(CASE WHEN distance IS NOT NULL THEN 1 ELSE 0 END) AS FLOAT)
-	/ COUNT(*) * 100 AS VARCHAR)+'%' AS SuccessfulPrecentage
-FROM #temp_runner_orders
-GROUP BY runner_id
-
-````
-
-
-#### Answer:
-runner_id | SuccessfulPrecentage
--- | --
-1 | 100
-2 | 75
-3 | 50
-
+with_this_amount_of_money_I_should_open_a_hotdog_store | 
+-- | 
+94.44 |
 
 ***
 
 ### Links :link:
 
 For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
-To the next chalenge solution, Foodie-fi click [here](https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner).<br/>
+To the next challenge solution, Foodie-fi click [here](https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner).<br/>
 To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
 
