@@ -144,6 +144,6 @@ runner_id | SuccessfulPrecentage
 ### Links :link:
 
 For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
-To the next chalenge solution, Foodie-fi click [here](https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner).<br/>
+To the next solution, Pricing and Ratings click [here]([https://github.com/yairtes/8-Week-SQL-Challenge/tree/main/Case%20Study%20%232%20-%20Pizza%20Runner](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%232%20-%20Pizza%20Runner/D.%20Pricing%20and%20Ratings.md)).<br/>
 To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
 
