@@ -141,6 +141,10 @@ runner_id | SuccessfulPrecentage
 
 ***
 
+<p align="center">
+  :nerd_face:	:nerd_face:	:nerd_face:	
+</p>
+
 ### Links :link:
 
 For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
