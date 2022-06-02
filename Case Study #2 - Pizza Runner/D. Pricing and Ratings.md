@@ -159,7 +159,9 @@ with_this_amount_of_money_I_should_open_a_hotdog_store |
 94.44 |
 
 ***
-
+<p align="center">
+  :nerd_face:	:nerd_face:	:nerd_face:	
+</p>
 ### Links :link:
 
 For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
