@@ -157,7 +157,7 @@ pro monthly | 325 | 32.5
 pro annual | 37 | 3.7
 churn | 92 | 9.2
 
-
+***
 
 ### 7. What is the customer count and percentage breakdown of all 5 `plan_name` values at 2020-12-31?
 
@@ -259,7 +259,7 @@ WITH CTE_trial AS
 	CTE_Groups AS
 	(
 	SELECT *,
-		   days_to_annual/30 groups -- Dividing the dyas by 30 in order to get a column in order to concat the strings in the next CTE 
+		   days_to_annual/30 groups -- Dividing the dyas by 30 in order to get a column that can be concatenated the strings in the next CTE 
 	FROM CTE_date_difference 
 	)
 	SELECT  
@@ -321,3 +321,9 @@ Number_Of_downgrades |
 0
 
 ***
+
+### Links :link:
+
+For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
+To the next solution, C. Challenge Payment Questions click [here](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%233%20-%20Foodie-Fi/C.%20Challenge%20Payment%20Question.md).<br/>
+To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
