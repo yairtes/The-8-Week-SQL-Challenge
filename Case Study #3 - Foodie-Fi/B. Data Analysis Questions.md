@@ -132,261 +132,192 @@ Total_Churn | Churn_Precentage
 ### 6. What is the number and percentage of customer plans after their initial free trial?
 
 ````sql
-DROP TABLE IF EXISTS runner_review
-CREATE TABLE runner_review (
-	rating_id INT IDENTITY(1,1) PRIMARY KEY,
-	order_id INT,
-	runner_id INT,
-	rating INT,
-	reviews VARCHAR(MAX),
-	rating_time TIMESTAMP
+WITH CTE_plans AS
+	(
+	 SELECT customer_id, p.plan_id, plan_name,
+	   	    RANK() OVER(PARTITION BY customer_id ORDER BY p.plan_id) Rank
+	 FROM subscriptions s JOIN plans p
+		  ON s.plan_id = p.plan_id
 	)
-	SET IDENTITY_INSERT runner_review ON
-	INSERT INTO runner_review 
-		(
-		 rating_id,order_id,runner_id,rating,reviews,rating_time
-		)
-		VALUES
-			  ('1', '2', '1', '3','Not bad',default),
-			  ('2', '3', '1', '4','Kind runner', default),
-			  ('3', '4', '2', '5','fast delivery', default),
-			  ('4', '7', '2', '5','Got on time', default),
-			  ('5', '5', '3', '2','The was cold', default),
-			  ('6', '8', '2', '3','lol', default),
-			  ('7', '9', '2', '5','Great pizza, great service - see you tomorrow', default),
-			  ('8', '10', '1', '2','Lame', default)
-	SET IDENTITY_INSERT runner_review OFF
-	SELECT * FROM runner_review
+	SELECT plan_name,
+		   COUNT (DISTINCT customer_id) Number_Of_Customers,
+		   CAST(CAST(COUNT(DISTINCT customer_id) AS FLOAT) / 
+		   (SELECT COUNT(DISTINCT customer_id) FROM subscriptions) * 100 AS VARCHAR) +'%' AS '%'
+	FROM CTE_plans
+	WHERE rank = 2
+	GROUP BY plan_name
+	ORDER BY Number_Of_Customers DESC
 ````
 #### Answer:
 
-rating_id | order_id|runner_id|rating|review|rating_time
--- | -- | -- | --|--|--
-1|	2|	1|	3|	Not bad|	 2020-01-01 19:10:54.000
-2|	3|	1|	4|	Kind runner|	 2020-01-01 19:10:54.000
-3|	4|	2|	5|	fast delivery|	 2020-01-01 19:10:54.000
-4|	7|	2|	5|	Got on time|	 2020-01-01 19:10:54.000
-5|	5|	3|	2|	The was cold|	 2020-01-01 19:10:54.000
-6|	8|	2|	3|	lol|	 2020-01-01 19:10:54.000
-7|	9|	2|	5|	Great pizza, great service - see you tomorrow|	 2020-01-01 19:10:54.000
-8|	10|	1|	2|	Lame|	 2020-01-01 19:10:54.000
+plan_name | Number_Of_Customers | %
+-- | -- | --
+basic monthly | 546 | 54.6
+pro monthly | 325 | 32.5
+pro annual | 37 | 3.7
+churn | 92 | 9.2
+
 
 
 ### 7. What is the customer count and percentage breakdown of all 5 `plan_name` values at 2020-12-31?
+
 ````sql
-DROP TABLE IF EXISTS runner_review
-CREATE TABLE runner_review (
-	rating_id INT IDENTITY(1,1) PRIMARY KEY,
-	order_id INT,
-	runner_id INT,
-	rating INT,
-	reviews VARCHAR(MAX),
-	rating_time TIMESTAMP
-	)
-	SET IDENTITY_INSERT runner_review ON
-	INSERT INTO runner_review 
-		(
-		 rating_id,order_id,runner_id,rating,reviews,rating_time
+WITH CTE_rankings AS
+		(	
+		SELECT customer_id, p.plan_id, plan_name, start_date, 
+			   LEAD(start_date) OVER(PARTITION BY customer_id ORDER BY start_date, p.plan_id) Lead_Date
+		FROM subscriptions s JOIN plans p
+		     ON s.plan_id = p.plan_id
+		WHERE start_date <= '2020-12-31'
 		)
-		VALUES
-			  ('1', '2', '1', '3','Not bad',default),
-			  ('2', '3', '1', '4','Kind runner', default),
-			  ('3', '4', '2', '5','fast delivery', default),
-			  ('4', '7', '2', '5','Got on time', default),
-			  ('5', '5', '3', '2','The was cold', default),
-			  ('6', '8', '2', '3','lol', default),
-			  ('7', '9', '2', '5','Great pizza, great service - see you tomorrow', default),
-			  ('8', '10', '1', '2','Lame', default)
-	SET IDENTITY_INSERT runner_review OFF
-	SELECT * FROM runner_review
+		SELECT plan_id,
+			   COUNT(DISTINCT customer_id) AS Total_Customers,
+			   CAST(CAST(COUNT(DISTINCT customer_id) AS FLOAT) / 
+			   (SELECT COUNT(DISTINCT customer_id) FROM subscriptions) * 100 AS VARCHAR) +'%' AS '%'
+		FROM CTE_rankings
+		WHERE plan_id <> 0 AND Lead_Date IS NULL
+		GROUP BY plan_id	
 ````
+
+##### I used the LEAD function to retrive a consist value (which in our case is NULL) that will represent the last date for each customer.
+		 
 #### Answer:
 
-rating_id | order_id|runner_id|rating|review|rating_time
--- | -- | -- | --|--|--
-1|	2|	1|	3|	Not bad|	 2020-01-01 19:10:54.000
-2|	3|	1|	4|	Kind runner|	 2020-01-01 19:10:54.000
-3|	4|	2|	5|	fast delivery|	 2020-01-01 19:10:54.000
-4|	7|	2|	5|	Got on time|	 2020-01-01 19:10:54.000
-5|	5|	3|	2|	The was cold|	 2020-01-01 19:10:54.000
-6|	8|	2|	3|	lol|	 2020-01-01 19:10:54.000
-7|	9|	2|	5|	Great pizza, great service - see you tomorrow|	 2020-01-01 19:10:54.000
-8|	10|	1|	2|	Lame|	 2020-01-01 19:10:54.000
+plan_id | Total_Customers | %
+-- | -- | --
+1|	224|	22.4%
+2|	326|	32.6%
+3|	195|	19.5%
+4|	236|	23.6%
 
 ***
 
 ### 8. How many customers have upgraded to an annual plan in 2020?
 
 ````sql
-DROP TABLE IF EXISTS runner_review
-CREATE TABLE runner_review (
-	rating_id INT IDENTITY(1,1) PRIMARY KEY,
-	order_id INT,
-	runner_id INT,
-	rating INT,
-	reviews VARCHAR(MAX),
-	rating_time TIMESTAMP
-	)
-	SET IDENTITY_INSERT runner_review ON
-	INSERT INTO runner_review 
-		(
-		 rating_id,order_id,runner_id,rating,reviews,rating_time
-		)
-		VALUES
-			  ('1', '2', '1', '3','Not bad',default),
-			  ('2', '3', '1', '4','Kind runner', default),
-			  ('3', '4', '2', '5','fast delivery', default),
-			  ('4', '7', '2', '5','Got on time', default),
-			  ('5', '5', '3', '2','The was cold', default),
-			  ('6', '8', '2', '3','lol', default),
-			  ('7', '9', '2', '5','Great pizza, great service - see you tomorrow', default),
-			  ('8', '10', '1', '2','Lame', default)
-	SET IDENTITY_INSERT runner_review OFF
-	SELECT * FROM runner_review
+SELECT COUNT(DISTINCT customer_id) Customer_Num
+FROM subscriptions
+WHERE plan_id = 3 AND YEAR(start_date) = '2020' 
 ````
 #### Answer:
 
-rating_id | order_id|runner_id|rating|review|rating_time
--- | -- | -- | --|--|--
-1|	2|	1|	3|	Not bad|	 2020-01-01 19:10:54.000
-2|	3|	1|	4|	Kind runner|	 2020-01-01 19:10:54.000
-3|	4|	2|	5|	fast delivery|	 2020-01-01 19:10:54.000
-4|	7|	2|	5|	Got on time|	 2020-01-01 19:10:54.000
-5|	5|	3|	2|	The was cold|	 2020-01-01 19:10:54.000
-6|	8|	2|	3|	lol|	 2020-01-01 19:10:54.000
-7|	9|	2|	5|	Great pizza, great service - see you tomorrow|	 2020-01-01 19:10:54.000
-8|	10|	1|	2|	Lame|	 2020-01-01 19:10:54.000
+Customer_Num 
+-- |
+195	
 
 ***
 
 ### 9. How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
 
 ````sql
-DROP TABLE IF EXISTS runner_review
-CREATE TABLE runner_review (
-	rating_id INT IDENTITY(1,1) PRIMARY KEY,
-	order_id INT,
-	runner_id INT,
-	rating INT,
-	reviews VARCHAR(MAX),
-	rating_time TIMESTAMP
+WITH CTE_Anual_Plan AS
+	(
+	SELECT DATEDIFF(DAY,trial.start_date, anual.start_date) number_of_days 
+	FROM (SELECT customer_id, plan_id, start_date FROM subscriptions WHERE plan_id = 0) trial
+		 JOIN
+		 (SELECT customer_id, plan_id, start_date FROM subscriptions WHERE plan_id = 3) anual
+		 ON trial.customer_id = anual.customer_id
 	)
-	SET IDENTITY_INSERT runner_review ON
-	INSERT INTO runner_review 
-		(
-		 rating_id,order_id,runner_id,rating,reviews,rating_time
-		)
-		VALUES
-			  ('1', '2', '1', '3','Not bad',default),
-			  ('2', '3', '1', '4','Kind runner', default),
-			  ('3', '4', '2', '5','fast delivery', default),
-			  ('4', '7', '2', '5','Got on time', default),
-			  ('5', '5', '3', '2','The was cold', default),
-			  ('6', '8', '2', '3','lol', default),
-			  ('7', '9', '2', '5','Great pizza, great service - see you tomorrow', default),
-			  ('8', '10', '1', '2','Lame', default)
-	SET IDENTITY_INSERT runner_review OFF
-	SELECT * FROM runner_review
+	SELECT AVG(number_of_days) days_to_anual
+	FROM CTE_Anual_Plan
 ````
+
 #### Answer:
 
-rating_id | order_id|runner_id|rating|review|rating_time
--- | -- | -- | --|--|--
-1|	2|	1|	3|	Not bad|	 2020-01-01 19:10:54.000
-2|	3|	1|	4|	Kind runner|	 2020-01-01 19:10:54.000
-3|	4|	2|	5|	fast delivery|	 2020-01-01 19:10:54.000
-4|	7|	2|	5|	Got on time|	 2020-01-01 19:10:54.000
-5|	5|	3|	2|	The was cold|	 2020-01-01 19:10:54.000
-6|	8|	2|	3|	lol|	 2020-01-01 19:10:54.000
-7|	9|	2|	5|	Great pizza, great service - see you tomorrow|	 2020-01-01 19:10:54.000
-8|	10|	1|	2|	Lame|	 2020-01-01 19:10:54.000
+days_to_anual 
+-- |
+104	
 
 ***
 
 ### 10. Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
 
 ````sql
-DROP TABLE IF EXISTS runner_review
-CREATE TABLE runner_review (
-	rating_id INT IDENTITY(1,1) PRIMARY KEY,
-	order_id INT,
-	runner_id INT,
-	rating INT,
-	reviews VARCHAR(MAX),
-	rating_time TIMESTAMP
+WITH CTE_trial AS
+	(
+	 SELECT customer_id, s.plan_id, start_date AS trial
+	 FROM subscriptions s JOIN plans p
+		  ON s.plan_id = p.plan_id
+	WHERE p.plan_id = 0 -- Retrives all the dates of 'trial'
+	),
+
+	CTE_annual_plan AS
+	( 
+	SELECT customer_id, s.plan_id, start_date AS annual
+	FROM subscriptions s JOIN plans p
+		 ON s.plan_id = p.plan_id
+	WHERE p.plan_id = 3 -- Retrives all the dates of 'pro annual'
+	),
+
+	CTE_date_difference AS
+	(  
+	SELECT DATEDIFF(DAY,t.trial,a.annual) days_to_annual
+	FROM CTE_trial t JOIN CTE_annual_plan a
+		 ON t.customer_id = a.customer_id -- Retrives the number of days from trial to pro annual plan based on the two first cte's
+	),
+	
+	CTE_Groups AS
+	(
+	SELECT *,
+		   days_to_annual/30 groups -- Dividing the dyas by 30 in order to get a column in order to concat the strings in the next CTE 
+	FROM CTE_date_difference 
 	)
-	SET IDENTITY_INSERT runner_review ON
-	INSERT INTO runner_review 
-		(
-		 rating_id,order_id,runner_id,rating,reviews,rating_time
-		)
-		VALUES
-			  ('1', '2', '1', '3','Not bad',default),
-			  ('2', '3', '1', '4','Kind runner', default),
-			  ('3', '4', '2', '5','fast delivery', default),
-			  ('4', '7', '2', '5','Got on time', default),
-			  ('5', '5', '3', '2','The was cold', default),
-			  ('6', '8', '2', '3','lol', default),
-			  ('7', '9', '2', '5','Great pizza, great service - see you tomorrow', default),
-			  ('8', '10', '1', '2','Lame', default)
-	SET IDENTITY_INSERT runner_review OFF
-	SELECT * FROM runner_review
+	SELECT  
+		   CONCAT((groups * 30) + 1, ' - ', (groups + 1) * 30, ' days') number_of_days,
+		   COUNT(days_to_annual) Total_customers
+	FROM CTE_Groups
+	GROUP BY groups
 ````
 #### Answer:
 
-rating_id | order_id|runner_id|rating|review|rating_time
--- | -- | -- | --|--|--
-1|	2|	1|	3|	Not bad|	 2020-01-01 19:10:54.000
-2|	3|	1|	4|	Kind runner|	 2020-01-01 19:10:54.000
-3|	4|	2|	5|	fast delivery|	 2020-01-01 19:10:54.000
-4|	7|	2|	5|	Got on time|	 2020-01-01 19:10:54.000
-5|	5|	3|	2|	The was cold|	 2020-01-01 19:10:54.000
-6|	8|	2|	3|	lol|	 2020-01-01 19:10:54.000
-7|	9|	2|	5|	Great pizza, great service - see you tomorrow|	 2020-01-01 19:10:54.000
-8|	10|	1|	2|	Lame|	 2020-01-01 19:10:54.000
+rating_id | order_id|
+-- | -- | 
+1 - 30 days	|48
+31 - 60 days	|25
+61 - 90 days	|33
+91 - 120 days	|35
+121 - 150 days	|43
+151 - 180 days	|35
+181 - 210 days	|27
+211 - 240 days	|4
+241 - 270 days	|5
+271 - 300 days	|1
+301 - 330 days	|1
+331 - 360 days	|1
 
 ***
 
 ### 11. How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
 
 ````sql
-DROP TABLE IF EXISTS runner_review
-CREATE TABLE runner_review (
-	rating_id INT IDENTITY(1,1) PRIMARY KEY,
-	order_id INT,
-	runner_id INT,
-	rating INT,
-	reviews VARCHAR(MAX),
-	rating_time TIMESTAMP
+WITH CTE_pro_monthly AS
+	(
+	 SELECT customer_id, s.plan_id, start_date AS basic_monhly
+	 FROM subscriptions s JOIN plans p
+		  ON s.plan_id = p.plan_id
+	WHERE p.plan_id = 1 AND
+		  YEAR(start_date) = '2020'
+	
+	),
+
+	 CTE_annual_plan AS
+	( 
+	SELECT customer_id, s.plan_id, start_date AS pro_monhly
+	FROM subscriptions s JOIN plans p
+		 ON s.plan_id = p.plan_id
+	WHERE p.plan_id = 2 AND
+		  YEAR(start_date) = '2020'
 	)
-	SET IDENTITY_INSERT runner_review ON
-	INSERT INTO runner_review 
-		(
-		 rating_id,order_id,runner_id,rating,reviews,rating_time
-		)
-		VALUES
-			  ('1', '2', '1', '3','Not bad',default),
-			  ('2', '3', '1', '4','Kind runner', default),
-			  ('3', '4', '2', '5','fast delivery', default),
-			  ('4', '7', '2', '5','Got on time', default),
-			  ('5', '5', '3', '2','The was cold', default),
-			  ('6', '8', '2', '3','lol', default),
-			  ('7', '9', '2', '5','Great pizza, great service - see you tomorrow', default),
-			  ('8', '10', '1', '2','Lame', default)
-	SET IDENTITY_INSERT runner_review OFF
-	SELECT * FROM runner_review
+
+	SELECT COUNT(*) Number_Of_downgrades
+	FROM CTE_pro_monthly pm JOIN CTE_annual_plan ap
+		 ON pm.customer_id = ap.customer_id
+	WHERE pro_monhly < basic_monhly
 ````
 #### Answer:
 
-rating_id | order_id|runner_id|rating|review|rating_time
--- | -- | -- | --|--|--
-1|	2|	1|	3|	Not bad|	 2020-01-01 19:10:54.000
-2|	3|	1|	4|	Kind runner|	 2020-01-01 19:10:54.000
-3|	4|	2|	5|	fast delivery|	 2020-01-01 19:10:54.000
-4|	7|	2|	5|	Got on time|	 2020-01-01 19:10:54.000
-5|	5|	3|	2|	The was cold|	 2020-01-01 19:10:54.000
-6|	8|	2|	3|	lol|	 2020-01-01 19:10:54.000
-7|	9|	2|	5|	Great pizza, great service - see you tomorrow|	 2020-01-01 19:10:54.000
-8|	10|	1|	2|	Lame|	 2020-01-01 19:10:54.000
+Number_Of_downgrades | 
+-- |
+0
 
 ***
