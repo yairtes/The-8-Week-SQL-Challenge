@@ -123,8 +123,8 @@ Total_Churn | Churn_Precentage
 92 |	9.2%
 
  ##### There are two Assumptions:<br/>
-	1. Every customer starts with plan number 0, which is trial
-	2. If after the trial the customer churns immediately, he will have two steps - plan 0 and plan 4
+1. Every customer starts with plan number 0, which is trial
+2. If after the trial the customer churns immediately, he will have two steps - plan 0 and plan 4
 
 
 ***
@@ -321,6 +321,9 @@ Number_Of_downgrades |
 0
 
 ***
+<p align="center">
+  :nerd_face:	:nerd_face:	:nerd_face:	
+</p>
 
 ### Links :link:
 
