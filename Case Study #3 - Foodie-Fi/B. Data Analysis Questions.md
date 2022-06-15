@@ -32,7 +32,7 @@ FROM subscriptions s JOIN plans p
 	 ON s.plan_id = p.plan_id
 WHERE p.plan_id = 0
 GROUP BY MONTH(start_date) ,
-		 DATENAME(MONTH,start_date) 
+	 DATENAME(MONTH,start_date) 
 ORDER BY Month_Number
 ````
 #### Answer:
