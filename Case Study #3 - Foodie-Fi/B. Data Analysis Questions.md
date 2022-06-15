@@ -8,7 +8,7 @@
 
 ````sql
 SELECT COUNT(DISTINCT customer_id) AS UniqueCustomers
-FROM subscriptions;
+FROM subscriptions
 ````
 
 #### Answer:
