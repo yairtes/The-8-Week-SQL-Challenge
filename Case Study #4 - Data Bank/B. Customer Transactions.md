@@ -175,6 +175,6 @@ more than 5% |
 ### Links :link:
 
 For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
-To the next solution, B.Customer Transactions click [here](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%234%20-%20Data%20Bank/B.%20Customer%20Transactions.md)<br/>
+To the next challenge solution, Data Mart click [here](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%235%20-%20Data%20Mart/1.%20Data%20Cleansing%20Steps.md)<br/>
 To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
 
