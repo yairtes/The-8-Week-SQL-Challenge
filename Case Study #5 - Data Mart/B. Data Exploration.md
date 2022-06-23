@@ -267,6 +267,11 @@ families|	young adults|	4.47
 
 ### 9. Can we use the `avg_transaction` column to find the average transaction size for each year for Retail vs Shopify? If not - how would you calculate it instead?
 
+Let's check.<br/>
+1. We will calculate the average with the avg_transaction column<br/>
+2. We will sum and devide the sales from the transactions and group it with the year and platform <br/>
+the second aprouch is the safe one, and we want to see if the results are identical.
+
 ````sql
 SELECT 
   year, 
@@ -277,7 +282,6 @@ FROM clean_weekly_sales
 GROUP BY year, platform
 ORDER BY year, platform
 ````
-
 
 #### Answer:
 
@@ -290,6 +294,8 @@ year | platform | with_avg_transaction |  avg_transaction_group
 2020|	Retail	|41	|36.56
 2020|	Shopify	|175	|179.03
 
+The answers are not the same, so the `avg_transaction_group` aprouch is the right one.
+
 ***
 
 <p align="center">
@@ -299,5 +305,5 @@ year | platform | with_avg_transaction |  avg_transaction_group
 ### Links :link:
 
 For any Questions, comments or better solutions, feel free to contact me on my [LinkedIn account](https://www.linkedin.com/in/yair-teshuva/).<br/>
-To the next solution, B.Customer Transactions click [here](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%234%20-%20Data%20Bank/B.%20Customer%20Transactions.md)<br/>
+To the next solution, c. Before & After Analysis click [here](https://github.com/yairtes/The-8-Week-SQL-Challenge/blob/main/Case%20Study%20%235%20-%20Data%20Mart/C.%20Before%20%26%20After%20Analysis.md)<br/>
 To the 8-Week-Challenge site click [here](https://8weeksqlchallenge.com/case-study-1/)
