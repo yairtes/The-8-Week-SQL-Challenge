@@ -1,4 +1,4 @@
-# :bank:			 Case Study #4: Data Bank :dollar:		
+# :shopping_cart:	 Case Study #4: Data Mart :shopping_cart:		
 
 ##
 <img src="https://user-images.githubusercontent.com/98579297/175327420-ac481e30-966c-4fb6-9341-b1179732a33f.png" alt="Image" width="500" height="520">
