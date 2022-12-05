@@ -210,6 +210,11 @@ WITH CTE_before AS
 ### 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi — how many points do customer A and B have at the end of January?
 
 ````sql 
+WITH CTE_7days AS
+	(
+	SELECT *,
+		   DATEADD(DAY,6,join_date) FirstWeek,
+		   EOMONTH('2021-01-31') EndOfMonth
 	FROM members
 	)
 	SELECT s.customer_id,
